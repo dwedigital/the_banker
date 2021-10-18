@@ -1,36 +1,59 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace Bank{
+namespace Bank
+{
 
-    class Account{
-        string AccountHolder{ get;  set; }
-        string AccountName{ get;  set; }
-        public int AccountNumber{  get; private set; }
-        double AccountBalance{ get;  set; }
+    class Account
+    {
+        public string AccountHolder { get; private set; }
+        public string AccountName { get; private set; }
+        public int AccountNumber { get; private set; }
+        public double AccountBalance { get; private set; }
 
-        public Account(List<Account> Accounts){
-            int maxAccount;
-            try{
-             maxAccount = Accounts.Max(t => t.AccountNumber)+1;
+        public Account(List<Account> accounts, string accountHolder, string accountName, double accountBalance)
+        {
+            int accNumber;
+            try
+            {
+                accNumber = accounts.Max(t => t.AccountNumber) + 1;
             }
-            catch(InvalidOperationException){
-                maxAccount = 1;
+            catch (InvalidOperationException)
+            {
+                accNumber = 1;
             }
 
-            OpenAccount(maxAccount);
+            AccountHolder = accountHolder;
+            AccountName = accountName;
+            AccountBalance = accountBalance;
+            AccountNumber = accNumber;
         }
 
-        private void OpenAccount(int accountNumber){
-            Console.WriteLine("Account Holder...");
-            AccountHolder = Console.ReadLine();
-            Console.WriteLine("Account Name...");
-            AccountName = Console.ReadLine();
-            Console.WriteLine("Account Balance...");
-            AccountBalance = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine("Account Number...");
-            AccountNumber = accountNumber;
-
+        public double Deposit(double amount)
+        {
+            if (amount <= 0)
+            {
+                throw new ArgumentException();
+            }
+            else
+            {
+                this.AccountBalance += amount;
+                return this.AccountBalance;
+            }
         }
+
+        public double Withdraw(double amount)
+        {
+            if (amount <= 0 || (this.AccountBalance-amount) < 0)
+            {
+                throw new ArgumentException();
+            }
+            else
+            {
+                this.AccountBalance -= amount;
+                return this.AccountBalance;
+            }
+        }
+
     }
 }

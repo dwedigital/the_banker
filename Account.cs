@@ -1,0 +1,6 @@
+namespace Bank{
+
+    class Account{
+        
+    }
+}

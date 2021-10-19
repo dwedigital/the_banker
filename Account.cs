@@ -44,7 +44,7 @@ namespace Bank
 
         public double Withdraw(double amount)
         {
-            if (amount <= 0 || (this.AccountBalance-amount) < 0)
+            if (amount <= 0 || (this.AccountBalance - amount) < 0)
             {
                 throw new ArgumentException();
             }
@@ -55,5 +55,25 @@ namespace Bank
             }
         }
 
+        public void Transfer(Account to, double transferAmount)
+        {
+            if (this.AccountBalance <= 0)
+            {
+                throw new ArgumentException("The account you are transferring from is at 0");
+
+            }
+            else if(this.AccountNumber == to.AccountNumber){
+                throw new ArgumentException("You can not transfer to the same accounts");
+            }
+            else if((this.AccountBalance-transferAmount)<0){
+                throw new ArgumentException("This will make the account you are transferring from negative");
+            }else{
+                
+                this.AccountBalance -= transferAmount;
+                to.AccountBalance += transferAmount;
+
+            }
+
+        }
     }
 }

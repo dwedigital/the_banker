@@ -21,6 +21,7 @@ namespace Bank
                 Console.WriteLine("D: Make a deposit");
                 Console.WriteLine("W: Make a withdrawl");
                 Console.WriteLine("T: Make a transfer");
+                Console.WriteLine("X: Leave the bank");
                 string input = Console.ReadLine().ToUpper();
                 if (input != "X")
                 {
@@ -41,6 +42,11 @@ namespace Bank
                             break;
                         case "W":
                             Withdraw(Accounts);
+                            break;
+                        case "T":
+                            Transfer(Accounts);
+                            break;
+                        case "X":
                             break;
                     }
                 }
@@ -115,6 +121,7 @@ namespace Bank
 
             try
             {
+                // Not happy with how this whole section is within a try block - ideally want to split both inputs to give instant feedback
                 Account account = Accounts.Find(x => x.AccountNumber == accNumber);
                 Console.WriteLine("How much do you want to withdraw?");
                 double amount = Convert.ToDouble(Console.ReadLine());
@@ -131,6 +138,21 @@ namespace Bank
             {
                 Console.WriteLine("Amount must be greater than 0 and account can not be negative");
             }
+        }
+
+        static public void Transfer(List<Account> Accounts)
+        {
+            Console.WriteLine("Please enter account number to transfer from...");
+            int fromAcc = Convert.ToInt16(Console.ReadLine());
+            Console.WriteLine("Please enter account number to transfer to...");
+            int toAcc = Convert.ToInt16(Console.ReadLine());
+            Console.WriteLine("Please enter transfer amount...");
+            double amount = Convert.ToInt16(Console.ReadLine());
+
+            Account FromAcc = Accounts.Find(x => x.AccountNumber == fromAcc);
+            Account ToAcc = Accounts.Find(x => x.AccountNumber == toAcc);
+
+            FromAcc.Transfer(ToAcc, amount);
         }
     }
 }

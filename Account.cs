@@ -4,7 +4,7 @@ using System.Linq;
 namespace Bank
 {
 
-    class Account
+    class Account: IAccount
     {
         public string AccountHolder { get; private set; }
         public string AccountName { get; private set; }

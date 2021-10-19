@@ -11,6 +11,8 @@ namespace Bank
         public int AccountNumber { get; private set; }
         public double AccountBalance { get; private set; }
 
+        public double Overdraft{ get; private set; } = 0.0;
+
         public Account(List<Account> accounts, string accountHolder, string accountName, double accountBalance)
         {
             int accNumber;
@@ -57,7 +59,7 @@ namespace Bank
 
         public void Transfer(Account to, double transferAmount)
         {
-            if (this.AccountBalance <= 0)
+            if (this.AccountBalance <= 0 && this.Overdraft <= 0)
             {
                 throw new ArgumentException("The account you are transferring from is at 0");
 
@@ -65,7 +67,7 @@ namespace Bank
             else if(this.AccountNumber == to.AccountNumber){
                 throw new ArgumentException("You can not transfer to the same accounts");
             }
-            else if((this.AccountBalance-transferAmount)<0){
+            else if(((this.AccountBalance+this.Overdraft)-transferAmount)<0){
                 throw new ArgumentException("This will make the account you are transferring from negative");
             }else{
                 
@@ -74,6 +76,15 @@ namespace Bank
 
             }
 
+        }
+
+        public double SetOverdraft(double amount){
+            if(this.Overdraft == 0.0){
+                this.Overdraft +=amount;
+                return this.Overdraft;
+            }else {
+                throw new ArgumentException("There is already an overdraft in place");
+            }
         }
     }
 }

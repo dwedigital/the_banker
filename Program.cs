@@ -21,6 +21,7 @@ namespace Bank
                 Console.WriteLine("D: Make a deposit");
                 Console.WriteLine("W: Make a withdrawl");
                 Console.WriteLine("T: Make a transfer");
+                Console.WriteLine("C: Create overdraft facility");
                 Console.WriteLine("X: Leave the bank");
                 string input = Console.ReadLine().ToUpper();
                 if (input != "X")
@@ -45,6 +46,9 @@ namespace Bank
                             break;
                         case "T":
                             Transfer(Accounts);
+                            break;
+                        case "C":
+                            Overdraft(Accounts);
                             break;
                         case "X":
                             break;
@@ -75,7 +79,7 @@ namespace Bank
         {
             foreach (Account account in Accounts)
             {
-                Console.WriteLine($"Account holder: {account.AccountHolder} | Acc #: {account.AccountNumber} | Name: {account.AccountName} | Amount: {account.AccountBalance}");
+                Console.WriteLine($"Account holder: {account.AccountHolder} | Acc #: {account.AccountNumber} | Name: {account.AccountName} | Amount: {account.AccountBalance} | Overdraft: {account.Overdraft}");
             }
         }
 
@@ -85,7 +89,7 @@ namespace Bank
             int accNumber = Convert.ToInt16(Console.ReadLine());
             Account account = Accounts.Find(x => x.AccountNumber == accNumber);
 
-            Console.WriteLine($"Account holder: {account.AccountHolder} | Acc #: {account.AccountNumber} | Name: {account.AccountName} | Amount: {account.AccountBalance}");
+            Console.WriteLine($"Account holder: {account.AccountHolder} | Acc #: {account.AccountNumber} | Name: {account.AccountName} | Amount: {account.AccountBalance} | Overdraft: {account.Overdraft}");
 
         }
 
@@ -153,6 +157,19 @@ namespace Bank
             Account ToAcc = Accounts.Find(x => x.AccountNumber == toAcc);
 
             FromAcc.Transfer(ToAcc, amount);
+        }
+
+        static public void Overdraft(List<Account> Accounts)
+        {
+            Console.WriteLine("Please enter account number you want to apply overdraft to...");
+            int account = Convert.ToInt16(Console.ReadLine());
+            Console.WriteLine("Please enter overdraft amount...");
+            double amount = Convert.ToInt16(Console.ReadLine());
+
+            Account Acc = Accounts.Find(x => x.AccountNumber == account);
+
+            double overdraftAmount = Acc.SetOverdraft(amount); 
+            Console.WriteLine($"New overdraft amount: {overdraftAmount}");
         }
     }
 }
